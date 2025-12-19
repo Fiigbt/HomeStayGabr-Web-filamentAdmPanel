@@ -3,12 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Reservasi extends Model
 {
     protected $table = 'reservasi';
+
     protected $fillable = [
         'id_penyewa',
         'id_user',
@@ -18,21 +17,21 @@ class Reservasi extends Model
         'status_reservasi',
         'total_harga',
         'dp',
-        'catatan'
+        'catatan',
     ];
 
-    public function penyewa(): BelongsTo
+    public function kamar()
+    {
+        return $this->belongsToMany(
+            Kamar::class,
+            'reservasi_kamar',
+            'id_reservasi',
+            'id_kamar'
+        )->withPivot('harga_per_malam');
+    }
+
+    public function penyewa()
     {
         return $this->belongsTo(Penyewa::class, 'id_penyewa', 'id_penyewa');
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'id_user');
-    }
-
-    public function kamar(): HasMany
-    {
-        return $this->hasMany(ReservasiKamar::class, 'id_reservasi');
     }
 }

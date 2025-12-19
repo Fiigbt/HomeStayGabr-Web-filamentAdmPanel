@@ -8,8 +8,6 @@ use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\BulkActionGroup;
-use App\Models\ReservasiKamar;
-use App\Models\Kamar;
 
 class ReservasiTable
 {
@@ -22,13 +20,8 @@ class ReservasiTable
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('tgl_checkin')
-                    ->label('Check-in')
-                    ->date(),
-
-                Tables\Columns\TextColumn::make('tgl_checkout')
-                    ->label('Check-out')
-                    ->date(),
+                Tables\Columns\TextColumn::make('tgl_checkin')->date(),
+                Tables\Columns\TextColumn::make('tgl_checkout')->date(),
 
                 Tables\Columns\TextColumn::make('jumlah_tamu')
                     ->label('Tamu'),
@@ -43,94 +36,49 @@ class ReservasiTable
                     ]),
 
                 Tables\Columns\TextColumn::make('total_harga')
-                    ->label('Total')
                     ->money('IDR'),
             ])
 
             ->recordActions([
                 EditAction::make(),
 
-                // === SET CHECK-IN ===
-                Action::make('set_checkin')
+                Action::make('checkin')
                     ->label('Set Check-in')
-                    ->icon('heroicon-s-arrow-down-on-square')
+                    ->icon('heroicon-o-arrow-down-on-square')
                     ->color('info')
                     ->visible(fn ($record) =>
                         $record->status_reservasi === 'pending'
                     )
-                    ->action(function ($record) {
+                    ->action(fn ($record) =>
+                        $record->update(['status_reservasi' => 'checkin'])
+                    ),
 
-                        $record->update(['status_reservasi' => 'checkin']);
-
-                        // Update kamar -> terisi
-                        $kamarList = ReservasiKamar::where('id_reservasi', $record->id)->get();
-                        foreach ($kamarList as $row) {
-                            Kamar::where('id', $row->id_kamar)
-                                ->update(['status_kamar' => 'terisi']);
-                        }
-                    }),
-
-                // === SET CHECK-OUT ===
-                Action::make('set_checkout')
+                Action::make('checkout')
                     ->label('Set Check-out')
-                    ->icon('heroicon-s-arrow-up-on-square')
+                    ->icon('heroicon-o-arrow-up-on-square')
                     ->color('warning')
                     ->visible(fn ($record) =>
                         $record->status_reservasi === 'checkin'
                     )
-                    ->action(function ($record) {
+                    ->action(fn ($record) =>
+                        $record->update(['status_reservasi' => 'checkout'])
+                    ),
 
-                        $record->update(['status_reservasi' => 'checkout']);
-
-                        // Balikan kamar -> tersedia
-                        $kamarList = ReservasiKamar::where('id_reservasi', $record->id)->get();
-                        foreach ($kamarList as $row) {
-                            Kamar::where('id', $row->id_kamar)
-                                ->update(['status_kamar' => 'tersedia']);
-                        }
-                    }),
-
-                // === SET SELESAI ===
-                Action::make('set_selesai')
+                Action::make('selesai')
                     ->label('Set Selesai')
-                    ->icon('heroicon-s-check')
+                    ->icon('heroicon-o-check')
                     ->color('success')
                     ->visible(fn ($record) =>
                         $record->status_reservasi !== 'selesai'
                     )
-                    ->action(function ($record) {
-
-                        $record->update(['status_reservasi' => 'selesai']);
-
-                        // Pastikan kamar tersedia
-                        $kamarList = ReservasiKamar::where('id_reservasi', $record->id)->get();
-                        foreach ($kamarList as $row) {
-                            Kamar::where('id', $row->id_kamar)
-                                ->update(['status_kamar' => 'tersedia']);
-                        }
-                    }),
+                    ->action(fn ($record) =>
+                        $record->update(['status_reservasi' => 'selesai'])
+                    ),
             ])
 
             ->toolbarActions([
                 BulkActionGroup::make([
-
-                    // DELETE BULK ACTION
-                    DeleteBulkAction::make()
-                        ->before(function ($records) {
-
-                            foreach ($records as $record) {
-
-                                // Kembalikan semua kamar menjadi tersedia
-                                $kamarList = ReservasiKamar::where('id_reservasi', $record->id)->get();
-                                foreach ($kamarList as $row) {
-                                    Kamar::where('id', $row->id_kamar)
-                                        ->update(['status_kamar' => 'tersedia']);
-                                }
-
-                                // Hapus pivot
-                                ReservasiKamar::where('id_reservasi', $record->id)->delete();
-                            }
-                        }),
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

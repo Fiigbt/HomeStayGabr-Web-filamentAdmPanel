@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Penyewa extends Model
 {
     protected $table = 'penyewa';
-    protected $primaryKey = 'id_penyewa';
-    public $timestamps = true; // Karena ada created_at
+    protected $primaryKey = 'id_penyewa'; // 🔥 WAJIB
 
     protected $fillable = [
         'nama_penyewa',
@@ -18,8 +17,9 @@ class Penyewa extends Model
         'no_tlp',
         'email',
     ];
+
     public function reservasi()
-{
-    return $this->hasMany(\App\Models\Reservasi::class, 'id_penyewa');
-}
+    {
+        return $this->hasMany(Reservasi::class, 'id_penyewa', 'id_penyewa');
+    }
 }

@@ -3,9 +3,9 @@
 namespace App\Filament\Resources\Reservasi\Schemas;
 
 use App\Models\Kamar;
-use App\Models\Penyewa;
 use Filament\Forms;
 use Filament\Schemas\Schema;
+use Carbon\Carbon;
 
 class ReservasiForm
 {
@@ -14,67 +14,87 @@ class ReservasiForm
         return $schema->schema([
 
             Forms\Components\Select::make('id_penyewa')
-                ->label('Penyewa')
-                ->options(Penyewa::pluck('nama_penyewa', 'id_penyewa'))
-                ->searchable()
+                ->relationship('penyewa', 'nama_penyewa')
                 ->required(),
 
+            // =========================
+            // TANGGAL (WAJIB reactive)
+            // =========================
             Forms\Components\DatePicker::make('tgl_checkin')
-                ->label('Tanggal Check-in')
+                ->label('Check-in')
+                ->reactive()
+                ->afterStateUpdated(fn ($get, $set) =>
+                    self::hitungTotal($get, $set)
+                )
                 ->required(),
 
             Forms\Components\DatePicker::make('tgl_checkout')
-                ->label('Tanggal Check-out')
+                ->label('Check-out')
+                ->reactive()
+                ->afterStateUpdated(fn ($get, $set) =>
+                    self::hitungTotal($get, $set)
+                )
                 ->required(),
 
-            Forms\Components\TextInput::make('jumlah_tamu')
-                ->label('Jumlah Tamu')
-                ->numeric()
-                ->default(1)
-                ->required(),
-
-            Forms\Components\Select::make('status_reservasi')
-                ->label('Status Reservasi')
-                ->options([
-                    'pending' => 'Pending',
-                    'checkin' => 'Check-in',
-                    'checkout' => 'Check-out',
-                    'selesai' => 'Selesai',
-                ])
-                ->required(),
-
-            // MULTIPLE KAMAR
+            // =========================
+            // KAMAR (WAJIB reactive)
+            // =========================
             Forms\Components\MultiSelect::make('kamar_list')
                 ->label('Pilih Kamar')
-                ->options(
-                    Kamar::pluck('nomor_kamar', 'id')
-                )
-                ->searchable()
+                ->options(Kamar::pluck('nomor_kamar', 'id'))
                 ->reactive()
-                ->afterStateUpdated(function ($state, callable $set) {
-                    if (!$state || count($state) === 0) {
-                        $set('total_harga', 0);
-                        return;
-                    }
+                ->afterStateUpdated(fn ($get, $set) =>
+                    self::hitungTotal($get, $set)
+                ),
 
-                    $sum = Kamar::whereIn('id', $state)->sum('harga_per_malam');
-                    $set('total_harga', $sum);
-                }),
-            // TOTAL HARGA OTOMATIS
+            // =========================
+            // TOTAL (AUTO)
+            // =========================
             Forms\Components\TextInput::make('total_harga')
                 ->label('Total Harga')
                 ->numeric()
                 ->readOnly()
                 ->dehydrated(),
 
+            Forms\Components\Select::make('status_reservasi')
+                ->options([
+                    'pending' => 'Pending',
+                    'checkin' => 'Check-in',
+                    'checkout' => 'Check-out',
+                    'selesai' => 'Selesai',
+                ])
+                ->default('pending'),
+
             Forms\Components\TextInput::make('dp')
-                ->label('DP (Down Payment)')
                 ->numeric()
                 ->default(0),
 
             Forms\Components\Textarea::make('catatan')
-                ->label('Catatan')
                 ->columnSpanFull(),
         ]);
+    }
+
+    // =========================
+    // FUNGSI HITUNG TOTAL (SATU)
+    // =========================
+    protected static function hitungTotal(callable $get, callable $set): void
+    {
+        $kamar = $get('kamar_list');
+        $checkin = $get('tgl_checkin');
+        $checkout = $get('tgl_checkout');
+
+        if (empty($kamar) || ! $checkin || ! $checkout) {
+            $set('total_harga', 0);
+            return;
+        }
+
+        $malam = max(
+            Carbon::parse($checkout)->diffInDays(Carbon::parse($checkin)),
+            1
+        );
+
+        $harga = Kamar::whereIn('id', $kamar)->sum('harga_per_malam');
+
+        $set('total_harga', $harga * $malam);
     }
 }

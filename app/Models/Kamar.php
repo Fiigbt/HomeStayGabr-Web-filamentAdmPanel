@@ -17,14 +17,13 @@ class Kamar extends Model
         'deskripsi',
     ];
 
-    public function foto()
+    public function reservasis()
     {
-        return $this->hasMany(FotoKamar::class, 'id_kamar');
-    }
-
-    public function reservasi()
-    {
-        return $this->belongsToMany(Reservasi::class, 'reservasi_kamar', 'id_kamar', 'id_reservasi')
-            ->withPivot('harga_per_malam');
+        return $this->belongsToMany(
+            Reservasi::class,
+            'reservasi_kamar',
+            'id_kamar',
+            'id_reservasi'
+        )->withPivot('harga_per_malam');
     }
 }
