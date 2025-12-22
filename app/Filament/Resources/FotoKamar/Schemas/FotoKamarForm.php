@@ -19,8 +19,11 @@ class FotoKamarForm
                     ->label('Foto Kamar')
                     ->image()
                     ->directory('foto-kamar')
+                    ->disk('public')
                     ->maxSize(5120)
                     ->required()
+                    ->afterStateUpdated(function ($state) {                       
+                    })
                     ->helperText('Ukuran maksimal 5MB. Format: JPEG, PNG, GIF'),
 
                 Select::make('id_kamar')
@@ -50,4 +53,5 @@ class FotoKamarForm
             ]);
     }
 }
+
 

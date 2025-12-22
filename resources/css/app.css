@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -6,6 +6,100 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+}
+@layer components {
+    .gradient-bg {
+        @apply bg-gradient-to-br from-blue-500 to-blue-600;
+    }
+
+    .hero-gradient {
+        @apply bg-gradient-to-r from-blue-600 via-blue-500 to-purple-600;
+    }
+
+    .card-hover {
+        @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-2;
+    }
+
+    .feature-icon {
+        @apply w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-white flex items-center justify-center mx-auto;
+    }
+
+    .btn-primary {
+        @apply bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-3 rounded-lg transition-all duration-300 transform hover:scale-105 font-bold;
+    }
+
+    .btn-secondary {
+        @apply border-2 border-blue-600 text-blue-600 hover:bg-blue-50 transition font-bold rounded-lg;
+    }
+
+    .card-shadow {
+        @apply shadow-md hover:shadow-xl transition-shadow;
+    }
+
+    .text-gradient {
+        @apply bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent;
+    }
+
+    .input-focus {
+        @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+    }
+
+    .badge-success {
+        @apply px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full;
+    }
+
+    .badge-warning {
+        @apply px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-bold rounded-full;
+    }
+
+    .section-divider {
+        @apply border-t border-gray-200;
+    }
+}
+
+@layer utilities {
+    .smooth-transition {
+        @apply transition-all duration-300 ease-in-out;
+    }
+
+    .backdrop-blur-light {
+        @apply backdrop-blur-sm bg-white/95;
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.5s ease-in-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .glow-effect {
+        @apply drop-shadow-lg shadow-lg;
+    }
 }

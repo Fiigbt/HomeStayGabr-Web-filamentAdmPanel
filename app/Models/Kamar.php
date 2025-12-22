@@ -26,4 +26,14 @@ class Kamar extends Model
             'id_reservasi'
         )->withPivot('harga_per_malam');
     }
+
+    public function fotos()
+    {
+        return $this->hasMany(FotoKamar::class, 'id_kamar');
+    }
+
+    public function fotoCover()
+    {
+        return $this->hasOne(FotoKamar::class, 'id_kamar')->where('is_cover', true);
+    }
 }

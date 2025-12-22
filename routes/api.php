@@ -17,5 +17,4 @@ Route::apiResource('pembayaran', PembayaranController::class);
 Route::post('foto-kamar', [FotoKamarController::class, 'store']);
 Route::delete('foto-kamar/{id}', [FotoKamarController::class, 'destroy']);
 
-Route::get('log', [LogAktivitasController::class, 'index']);
-Route::post('log', [LogAktivitasController::class, 'store']);
+

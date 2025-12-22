@@ -5,6 +5,7 @@ namespace App\Filament\Resources\FotoKamar\Pages;
 use App\Filament\Resources\FotoKamar\FotoKamarResource;
 use App\Models\FotoKamar;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Notifications\Notification;
 
 class CreateFotoKamar extends CreateRecord
 {
@@ -27,5 +28,14 @@ class CreateFotoKamar extends CreateRecord
         }
 
         return $data;
+    }
+
+    protected function getSavedNotification(): ?Notification
+    {
+        return Notification::make()
+            ->success()
+            ->title('Foto Berhasil Disimpan!')
+            ->body('Foto kamar telah disimpan ke storage dan akan langsung tampil di website.')
+            ->send();
     }
 }
