@@ -78,73 +78,7 @@
         </div>
     </section>
 
-    <!-- Kamar Preview Section -->
-    <section id="kamar" class="py-20 px-4 bg-gray-50">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Koleksi Kamar Premium</h2>
-                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Pilih dari berbagai pilihan kamar yang dirancang untuk kenyamanan maksimal Anda</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Kamar Card 1 -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md card-hover">
-                    <div class="h-48 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                        <svg class="w-32 h-32 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-                        </svg>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Kamar Standard</h3>
-                        <p class="text-gray-600 mb-4">Kamar nyaman dengan fasilitas lengkap untuk keluarga kecil</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-blue-600">Rp 150K</span>
-                            <span class="text-sm text-gray-500">/malam</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kamar Card 2 -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md card-hover">
-                    <div class="h-48 bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
-                        <svg class="w-32 h-32 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-                        </svg>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Kamar Deluxe</h3>
-                        <p class="text-gray-600 mb-4">Kamar mewah dengan pemandangan bagus dan AC premium</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-purple-600">Rp 250K</span>
-                            <span class="text-sm text-gray-500">/malam</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kamar Card 3 -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md card-hover">
-                    <div class="h-48 bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center">
-                        <svg class="w-32 h-32 text-white opacity-30" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-                        </svg>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Kamar Suite</h3>
-                        <p class="text-gray-600 mb-4">Kamar VIP dengan area kerja dan fasilitas terlengkap</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-2xl font-bold text-pink-600">Rp 400K</span>
-                            <span class="text-sm text-gray-500">/malam</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-center mt-12">
-                <a href="{{ route('reservations.index') }}" class="inline-block px-8 py-3 btn-primary text-white rounded-lg font-bold">Lihat Semua Kamar</a>
-            </div>
-        </div>
-    </section>
-
+    
     <!-- Features Section -->
     <section id="features" class="py-20 px-4">
         <div class="max-w-7xl mx-auto">
